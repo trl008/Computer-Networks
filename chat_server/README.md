@@ -24,3 +24,10 @@ This program is a chat server for client communication with a server using TCP S
 To run the program type "python server.py \<PORT number>" to get the server running.
 Once the server is running a new client can connect by typing "python client.py \<server HOST number> \<server PORT number>".
 A message can then be input by the client in the terminal or one of the server commands.
+
+Resources:
+https://realpython.com/python-sockets/
+https://learningactors.com/creating-command-line-based-chat-room-using-python/
+https://docs.python.org/3/howto/sockets.html
+https://python.plainenglish.io/create-a-basic-lan-chat-room-with-python-f334776bf70c
+https://stackoverflow.com/questions/49330459/python-chat-server-version-command
