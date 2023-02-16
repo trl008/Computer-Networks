@@ -117,3 +117,17 @@ while True:
             if nickname:
                 # Call the handle_client function for this client
                 handle_client(socket, None, nicknames)
+
+    try:
+        receive()
+    except KeyboardInterrupt:
+        print("Server shutting down...")
+    finally:
+        server.closer()
+
+        #shutdown all clients
+        for client in clients:
+            client.close()
+
+        print("Server shut down.")
+        exit(0)

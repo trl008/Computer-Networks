@@ -28,14 +28,15 @@ import threading
 HOST = sys.argv[1]  # The server's hostname or IP address
 PORT = int(sys.argv[2])  # The port used by the server
 
+# Set up the client socket
+client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+client_socket.connect((HOST, PORT))
+
 def handle_server(server_socket):
     while True:
         data = server_socket.recv(1024).decode()
         print(data)
 
-# Set up the client socket
-client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-client_socket.connect((HOST, PORT))
 
 # Get the nickname from the user
 nickname = input("Enter your nickname: ")
