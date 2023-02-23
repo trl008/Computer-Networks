@@ -48,7 +48,7 @@ def parse_args():
     parser.add_argument('--alg',
                         help='The algorithm to use [sw].',
                         default='sw',
-                        choices=['sw', 'yours'])
+                        choices=['sw', 'reliableAlg'])
     return parser.parse_args()
 
 if __name__ == "__main__":

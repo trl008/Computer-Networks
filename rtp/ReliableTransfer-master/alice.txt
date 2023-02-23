@@ -43,60 +43,61 @@ CHAPTER I. Down the Rabbit-Hole
 Alice was beginning to get very tired of sitting by her sister on the
 bank, and of having nothing to do: once or twice she had peeped into the
 book her sister was reading, but it had no pictures or conversations in
-it, 'and what isject Gutenberg-tm License must appear prominently
-whenever any copy of a Project Gutenberg-tm work (any work on which the
-phrase "Project Gutenberg" appears, or with which the phrase "Project
-Gutenberg" is associated) is accessed, displayed, performed, viewed,
-copied or distributed:
+it, 'and what is the use of a book,' thought Alice 'without pictures or
+conversations?'
 
-This eBook is for the use of anyone anywhere at no cost and with
-almost no restrictions whatsoever.  You may copy it, give it away or
-re-use it under the terms of the Project Gutenberg License included
-with this eBook or online at www.gutenberg.org
+So she was considering in her own mind (as well as she could, for the
+hot day made her feel very sleepy and stupid), whether the pleasure
+of making a daisy-chain would be worth the trouble of getting up and
+picking the daisies, when suddenly a White Rabbit with pink eyes ran
+close by her.
 
-1.E.2.  If an individual Project Gutenberg-tm electronic work is derived
-from the public domain (does not contain a notice indicating that it is
-posted with permission of the copyright holder), the work can be copied
-and distributed to anyone in the United States without paying any fees
-or charges.  If you are redistributing or providing access to a work
-with the phrase "Project Gutenberg" associated with or appearing on the
-work, you must comply either with the requirements of paragraphs 1.E.1
-through 1.E.7 or obtain permission for the use of the work and the
-Project Gutenberg-tm trademark as set forth in paragraphs 1.E.8 or
-1.E.9.
+There was nothing so VERY remarkable in that; nor did Alice think it so
+VERY much out of the way to hear the Rabbit say to itself, 'Oh dear!
+Oh dear! I shall be late!' (when she thought it over afterwards, it
+occurred to her that she ought to have wondered at this, but at the time
+it all seemed quite natural); but when the Rabbit actually TOOK A WATCH
+OUT OF ITS WAISTCOAT-POCKET, and looked at it, and then hurried on,
+Alice started to her feet, for it flashed across her mind that she had
+never before seen a rabbit with either a waistcoat-pocket, or a watch
+to take out of it, and burning with curiosity, she ran across the field
+after it, and fortunately was just in time to see it pop down a large
+rabbit-hole under the hedge.
 
-1.E.3.  If an individual Project Gutenberg-tm electronic work is posted
-with the permission of the copyright holder, your use and distribution
-must comply with both paragraphs 1.E.1 through 1.E.7 and any additional
-terms imposed by the copyright holder.  Additional terms will be linked
-to the Project Gutenberg-tm License for all works posted with the
-permission of the copyright holder found at the beginning of this work.
+In another moment down went Alice after it, never once considering how
+in the world she was to get out again.
 
-1.E.4.  Do not unlink or detach or remove the full Project Gutenberg-tm
-License terms from this work, or any files containing a part of this
-work or any other work associated with Project Gutenberg-tm.
+The rabbit-hole went straight on like a tunnel for some way, and then
+dipped suddenly down, so suddenly that Alice had not a moment to think
+about stopping herself before she found herself falling down a very deep
+well.
 
-1.E.5.  Do not copy, display, perform, distribute or redistribute this
-electronic work, or any part of this electronic work, without
-prominently displaying the sentence set forth in paragraph 1.E.1 with
-active links or immediate access to the full terms of the Project
-Gutenberg-tm License.
+Either the well was very deep, or she fell very slowly, for she had
+plenty of time as she went down to look about her and to wonder what was
+going to happen next. First, she tried to look down and make out what
+she was coming to, but it was too dark to see anything; then she
+looked at the sides of the well, and noticed that they were filled with
+cupboards and book-shelves; here and there she saw maps and pictures
+hung upon pegs. She took down a jar from one of the shelves as
+she passed; it was labelled 'ORANGE MARMALADE', but to her great
+disappointment it was empty: she did not like to drop the jar for fear
+of killing somebody, so managed to put it into one of the cupboards as
+she fell past it.
 
-1.E.6.  You may convert to and distribute this work in any binary,
-compressed, marked up, nonproprietary or proprietary form, including any
-word processing or hypertext form.  However, if you provide access to or
-distribute copies of a Project Gutenberg-tm work in a format other than
-"Plain Vanilla ASCII" or other format used in the official version
-posted on the official Project Gutenberg-tm web site (www.gutenberg.org),
-you must, at no additional cost, fee or expense to the user, provide a
-copy, a means of exporting a copy, or a means of obtaining a copy upon
-request, of the work in its original "Plain Vanilla ASCII" or other
-form.  Any alternate format must include the full Project Gutenberg-tm
-License as specified in paragraph 1.E.1.
+'Well!' thought Alice to herself, 'after such a fall as this, I shall
+think nothing of tumbling down stairs! How brave they'll all think me at
+home! Why, I wouldn't say anything about it, even if I fell off the top
+of the house!' (Which was very likely true.)
 
-1.E.7.  Do not charge a fee for access to, viewing, displaying,
-performing, copying or distributing any Project Gutenberg-tm works
-unless you comply with paragraph 1.E.8 orat Latitude was, or
+Down, down, down. Would the fall NEVER come to an end! 'I wonder how
+many miles I've fallen by this time?' she said aloud. 'I must be getting
+somewhere near the centre of the earth. Let me see: that would be four
+thousand miles down, I think--' (for, you see, Alice had learnt several
+things of this sort in her lessons in the schoolroom, and though this
+was not a VERY good opportunity for showing off her knowledge, as there
+was no one to listen to her, still it was good practice to say it over)
+'--yes, that's about the right distance--but then I wonder what Latitude
+or Longitude I've got to?' (Alice had no idea what Latitude was, or
 Longitude either, but thought they were nice grand words to say.)
 
 Presently she began again. 'I wonder if I shall fall right THROUGH the
@@ -2061,7 +2062,22 @@ scream of laughter. 'Oh, hush!' the Rabbit whispered in a frightened
 tone. 'The Queen will hear you! You see, she came rather late, and the
 Queen said--'
 
-'Get to your plac the hedgehog had unrolled
+'Get to your places!' shouted the Queen in a voice of thunder, and
+people began running about in all directions, tumbling up against each
+other; however, they got settled down in a minute or two, and the game
+began. Alice thought she had never seen such a curious croquet-ground in
+her life; it was all ridges and furrows; the balls were live hedgehogs,
+the mallets live flamingoes, and the soldiers had to double themselves
+up and to stand on their hands and feet, to make the arches.
+
+The chief difficulty Alice found at first was in managing her flamingo:
+she succeeded in getting its body tucked away, comfortably enough, under
+her arm, with its legs hanging down, but generally, just as she had got
+its neck nicely straightened out, and was going to give the hedgehog a
+blow with its head, it WOULD twist itself round and look up in her face,
+with such a puzzled expression that she could not help bursting out
+laughing: and when she had got its head down, and was going to begin
+again, it was very provoking to find that the hedgehog had unrolled
 itself, and was in the act of crawling away: besides all this, there was
 generally a ridge or furrow in the way wherever she wanted to send the
 hedgehog to, and, as the doubled-up soldiers were always getting up
@@ -2147,7 +2163,26 @@ executed for having missed their turns, and she did not like the look
 of things at all, as the game was in such confusion that she never knew
 whether it was her turn or not. So she went in search of her hedgehog.
 
-The hedgehog was engaged in a fight with an, and they repeated their arguments to her, though, as they
+The hedgehog was engaged in a fight with another hedgehog, which seemed
+to Alice an excellent opportunity for croqueting one of them with the
+other: the only difficulty was, that her flamingo was gone across to the
+other side of the garden, where Alice could see it trying in a helpless
+sort of way to fly up into a tree.
+
+By the time she had caught the flamingo and brought it back, the fight
+was over, and both the hedgehogs were out of sight: 'but it doesn't
+matter much,' thought Alice, 'as all the arches are gone from this side
+of the ground.' So she tucked it away under her arm, that it might not
+escape again, and went back for a little more conversation with her
+friend.
+
+When she got back to the Cheshire Cat, she was surprised to find quite a
+large crowd collected round it: there was a dispute going on between
+the executioner, the King, and the Queen, who were all talking at once,
+while all the rest were quite silent, and looked very uncomfortable.
+
+The moment Alice appeared, she was appealed to by all three to settle
+the question, and they repeated their arguments to her, though, as they
 all spoke at once, she found it very hard indeed to make out exactly
 what they said.
 
@@ -2465,51 +2500,7 @@ He was an old crab, HE was.'
 'I never went to him,' the Mock Turtle said with a sigh: 'he taught
 Laughing and Grief, they used to say.'
 
-'So he did, so he tamping on the
-ground as she spoke; 'either you or your head must be off, and that in
-about half no time! Take your choice!'
-
-The Duchess took her choice, and was gone in a moment.
-
-'Let's go on with the game,' the Queen said to Alice; and Alice was
-too much frightened to say a word, but slowly followed her back to the
-croquet-ground.
-
-The other guests had taken advantage of the Queen's absence, and were
-resting in the shade: however, the moment they saw her, they hurried
-back to the game, the Queen merely remarking that a moment's delay would
-cost them their lives.
-
-All the time they were playing the Queen never left off quarrelling with
-the other players, and shouting 'Off with his head!' or 'Off with her
-head!' Those whom she sentenced were taken into custody by the soldiers,
-who of course had to leave off being arches to do this, so that by
-the end of half an hour or so there were no arches left, and all the
-players, except the King, the Queen, and Alice, were in custody and
-under sentence of execution.
-
-Then the Queen left off, quite out of breath, and said to Alice, 'Have
-you seen the Mock Turtle yet?'
-
-'No,' said Alice. 'I don't even know what a Mock Turtle is.'
-
-'It's the thing Mock Turtle Soup is made from,' said the Queen.
-
-'I never saw one, or heard of one,' said Alice.
-
-'Come on, then,' said the Queen, 'and he shall tell you his history,'
-
-As they walked off together, Alice heard the King say in a low voice,
-to the company generally, 'You are all pardoned.' 'Come, THAT'S a good
-thing!' she said to herself, for she had felt quite unhappy at the
-number of executions the Queen had ordered.
-
-They very soon came upon a Gryphon, lying fast asleep in the sun.
-(IF you don't know what a Gryphon is, look at the picture.) 'Up, lazy
-thing!' said the Queen, 'and take this young lady to see the Mock
-Turtle, and to hear his history. I must go back and see after some
-executions I have ordered'; and she walked off, leaving Alice alone with
-the Gryphon. Alice did not quite lidid,' said the Gryphon, sighing in his turn; and both
+'So he did, so he did,' said the Gryphon, sighing in his turn; and both
 creatures hid their faces in their paws.
 
 'And how many hours a day did you do lessons?' said Alice, in a hurry to
@@ -3312,7 +3303,28 @@ sentence first!'
 'Off with her head!' the Queen shouted at the top of her voice. Nobody
 moved.
 
-'Who cares for you?' said Alice, (she had grown to her full sihing the setting sun, and thinking of little Alice and all her
+'Who cares for you?' said Alice, (she had grown to her full size by this
+time.) 'You're nothing but a pack of cards!'
+
+At this the whole pack rose up into the air, and came flying down upon
+her: she gave a little scream, half of fright and half of anger, and
+tried to beat them off, and found herself lying on the bank, with her
+head in the lap of her sister, who was gently brushing away some dead
+leaves that had fluttered down from the trees upon her face.
+
+'Wake up, Alice dear!' said her sister; 'Why, what a long sleep you've
+had!'
+
+'Oh, I've had such a curious dream!' said Alice, and she told her
+sister, as well as she could remember them, all these strange Adventures
+of hers that you have just been reading about; and when she had
+finished, her sister kissed her, and said, 'It WAS a curious dream,
+dear, certainly: but now run in to your tea; it's getting late.' So
+Alice got up and ran off, thinking while she ran, as well she might,
+what a wonderful dream it had been.
+
+But her sister sat still just as she left her, leaning her head on her
+hand, watching the setting sun, and thinking of little Alice and all her
 wonderful Adventures, till she too began dreaming after a fashion, and
 this was her dream:--
 
@@ -3697,32 +3709,6 @@ Please check the Project Gutenberg Web pages for current donation
 methods and addresses.  Donations are accepted in a number of other
 ways including checks, online payments and credit card donations.
 To donate, please visit: http://pglaf.org/donate
-
-
-Section 5.  General Information About Project Gutenberg-tm electronic
-works.
-
-Professor Michael S. Hart is the originator of the Project Gutenberg-tm
-concept of a library of electronic works that could be freely shared
-with anyone.  For thirty years, he produced and distributed Project
-Gutenberg-tm eBooks with only a loose network of volunteer support.
-
-
-Project Gutenberg-tm eBooks are often created from several printed
-editions, all of which are confirmed as Public Domain in the U.S.
-unless a copyright notice is included.  Thus, we do not necessarily
-keep eBooks in compliance with any particular paper edition.
-
-
-Most people start at our Web site which has the main PG search facility:
-
-     http://www.gutenberg.org
-
-This Web site includes information about Project Gutenberg-tm,
-including how to make donations to the Project Gutenberg Literary
-Archive Foundation, how to help produce our new eBooks, and how to
-subscribe to our email newsletter to hear about new eBooks.
-af.org/donate
 
 
 Section 5.  General Information About Project Gutenberg-tm electronic
