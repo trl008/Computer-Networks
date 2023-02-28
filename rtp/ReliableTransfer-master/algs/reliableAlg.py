@@ -8,6 +8,7 @@ from algs.utils import load_file
 from algs.udp_wrapper import UdpWrapper
 from algs.texcept import TransferFailed
 import zlib
+import struct
 
 
 from datetime import datetime, timedelta
@@ -15,11 +16,9 @@ from datetime import datetime, timedelta
 log = logging.getLogger(__name__)
 
 class reliableAlg:
-    def __init__(self, retries=3, nextSeqNum = 0, ackN = 0):
+    def __init__(self, retries=7, ackN = 0):
         self.retries = retries
         self.timeout = timedelta(seconds=5)
-        self.send_base = send_base
-        self.nextSeqNum = nextSeqNum
         self.ackN=ackN
 
     def run_server(self, outdir, addr, mtu):
@@ -65,12 +64,26 @@ class reliableAlg:
                 else:
                     # else we got a chunk of data
                     log.debug("Got a chunk!")
-                    
-                    # just write the data...
-                    outfile.write(data)
+                    log.info("Data {}".format(data))
 
-                    # and send an ack
-                    sock.sendto(B'ACK', remote_addr)
+                    # extract header and compare the checksum from the header to the actual calculated checksum
+                    udp_header = data[:16]
+                    log.info("Header {}".format(udp_header))
+                    packet_data = data[16:]
+                    udp_header_unpacked = struct.unpack("IIII", udp_header)
+                    correct_checksum = udp_header[3]
+                    checksum = reliableAlg.checksum_calculator(packet_data)
+                    is_data_corrupted = correct_checksum != checksum
+
+                    # send NACK if data is corrupted, if not, write data and send ACK
+                    if is_data_corrupted:
+                        log.debug("Send NACK")
+                        sock.sendto(B'NACK', remote_addr)
+                    else:
+                        outfile.write(packet_data)
+                        log.debug("Send ACK")
+                        sock.sendto(B'ACK', remote_addr)
+
             else:
                 # we are not in a transfer, check for begin
                 if data[:5] == B'BEGIN':
@@ -97,7 +110,7 @@ class reliableAlg:
                         sock.sendto(B'OKBEGIN', remote_addr)
                 else:
                     # we got something unexpected, ignore it.
-                    log.info("Ignoreing junk, not in xfer.")
+                    log.info("Ignoring junk, not in xfer.")
             last = datetime.now()
 
     def begin_xfr(self, dest, filename, mtu):
@@ -167,13 +180,12 @@ class reliableAlg:
         while i<len(payload):
             chunk = payload[i]
             tries = 0
+            checksum = reliableAlg.checksum_calculator(chunk)
+            udp_header = struct.pack("II", i, checksum)
+            packet_with_header = udp_header + chunk
             log.info("Send chunk {} of {}".format(i, len(payload)-1))
             while tries < self.retries:
                 # send the chunk
-                packet = chunk.encode()
-                checksum = checksum_calculator(packet)
-                udp_header = struct.pack("!II", i, checksum)
-                packet_with_header = udp_header + packet
                 sock.sendto(packet_with_header, dest)
                 try:
                     # wait for an ACK
@@ -185,7 +197,8 @@ class reliableAlg:
                 # if we got an ACK, break out of the loop (chunk was received)
                 if data == B"ACK":
                     break
-                else if data == B"NACK":
+                elif data == B"NACK":
+                    log.info("Packet corrupted, RETRY")
                     tries +=1
                     continue
                 else:
@@ -202,9 +215,9 @@ class reliableAlg:
         
 
     def send_file(self, filename, dest, mtu):
-        "Entrypoint for stop and wait sending"
+        "Entrypoint for Reliable Algorithm sending"
         st = datetime.now()
-        log.info("Sending with stop-and-wait {} --> {}:{} [MTU={}].".format(
+        log.info("Sending with Reliable Algorithm {} --> {}:{} [MTU={}].".format(
             filename, dest[0], dest[1], mtu))
 
         # break the file into mtu sized pieces
@@ -222,7 +235,7 @@ class reliableAlg:
         # print stats
         et = datetime.now()
         seconds = (et-st).total_seconds()
-        log.info("Sent with stop-and-wait {} in {} seconds = {:.0f} bps.".format(
+        log.info("Sent with Reliable Algorithm {} in {} seconds = {:.0f} bps.".format(
             filename, seconds,
             total_bytes / seconds))
 
@@ -235,4 +248,4 @@ class reliableAlg:
     
 
 # singleton
-sw = StopAndWait()
+ra = reliableAlg()
