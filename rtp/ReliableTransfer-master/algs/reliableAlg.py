@@ -15,10 +15,14 @@ from datetime import datetime, timedelta
 
 log = logging.getLogger(__name__)
 
-class reliableAlg:
-    def __init__(self, retries=7):
+class ReliableAlg:
+    def __init__(self, retries=3):
         self.retries = retries
         self.timeout = timedelta(seconds=5)
+
+    def checksum_calculator(data):
+        checksum = zlib.crc32(data)
+        return checksum
 
     def run_server(self, outdir, addr, mtu):
         "run the server on the given addr/port/mtu, files are stored in outdir"
@@ -36,6 +40,8 @@ class reliableAlg:
         in_xfr = False
         outfile = None
         last = datetime.now() - self.timeout
+
+        next_seq_num = 0
 
         log.info("Server started on {}".format(addr))
         while True:
@@ -66,15 +72,18 @@ class reliableAlg:
 
                     # extract header and compare the checksum from the header to the actual calculated checksum
                     udp_header = data[:8]
-                    checksum_num = reliableAlg.checksum_calculator(data[8:])
+                    checksum_num = ReliableAlg.checksum_calculator(data[8:])
                     i, checksum = struct.unpack("II", udp_header)
-
+                        
                     # send NACK if data is corrupted, if not, write data and send ACK
-                    if (checksum_num == checksum) and (next_seq_num >=i):
-                        if next_seq_num==i:
-                            outfile.write(data)
+                    if (checksum_num == checksum) and (next_seq_num ==i):
+                        # Just write data
+                        outfile.write(data[8:])
                         sock.sendto(B'ACK', remote_addr)
                         next_seq_num +=1
+                    elif (next_seq_num != i):
+                        byte = struct.pack("I",next_seq_num)
+                        sock.sendto(byte, remote_addr)
                     else:
                         sock.sendto(B'NACK', remote_addr)
 
@@ -83,6 +92,7 @@ class reliableAlg:
                 if data[:5] == B'BEGIN':
 
                     # parse the message to get mtu and filename
+                    next_seq_num =0
                     smsg = data.decode('utf-8').split('\n')
                     beginmsg = smsg[0]
                     filename = smsg[1]
@@ -169,16 +179,16 @@ class reliableAlg:
             ))
 
     def xfr(self, sock, payload, dest, mtu):
-        # send each chunk and header with checksum and seq num, waiting for an ACK
+        # # send each chunk and header with checksum and seq num, waiting for an ACK
         i=0
         while i<len(payload):
             tries = 0
             while tries < self.retries:
                 chunk = payload[i]
-                checksum = reliableAlg.checksum_calculator(chunk)
+                log.info("Send chunk {} of {}".format(i, len(payload)-1))
+                checksum = ReliableAlg.checksum_calculator(chunk)
                 udp_header = struct.pack("II", i, checksum)
                 packet_with_header = udp_header + chunk
-                log.info("Send chunk {} of {}".format(i, len(payload)-1))
                 # send the chunk
                 sock.sendto(packet_with_header, dest)
                 try:
@@ -194,8 +204,12 @@ class reliableAlg:
                     break
                 elif data == B"NACK":
                     log.info("Packet corrupted, RETRY")
-                    i-=1
                     continue
+                elif data != B"NACK" or data != B"ACK":
+                    if packet_with_header[0:4] != data:
+                        i = struct.unpack("I", data)[0]
+                        log.info("Wrong packet sent, RETRY")
+                        continue
                 else:
                     log.info("Bad response from server, got {} instead of ACK, RETRY".format(
                         data))
@@ -207,12 +221,11 @@ class reliableAlg:
         # simple chunking by MTU
         chunks = math.ceil(len(payload) / mtu)
         return [payload[i*mtu:(i+1)*mtu] for i in range(chunks)], len(payload)
-        
 
     def send_file(self, filename, dest, mtu):
-        "Entrypoint for Reliable Algorithm sending"
+        "Entrypoint for reliable alg  sending"
         st = datetime.now()
-        log.info("Sending with Reliable Algorithm {} --> {}:{} [MTU={}].".format(
+        log.info("Sending with reliable alg {} --> {}:{} [MTU={}].".format(
             filename, dest[0], dest[1], mtu))
 
         # break the file into mtu sized pieces
@@ -230,17 +243,13 @@ class reliableAlg:
         # print stats
         et = datetime.now()
         seconds = (et-st).total_seconds()
-        log.info("Sent with Reliable Algorithm {} in {} seconds = {:.0f} bps.".format(
+        log.info("Sent with reliable algorithm {} in {} seconds = {:.0f} bps.".format(
             filename, seconds,
             total_bytes / seconds))
 
         return True
 
-    def checksum_calculator(data):
-        checksum = zlib.crc32(data)
-        return checksum
-
     
 
 # singleton
-ra = reliableAlg()
+ra = ReliableAlg()
