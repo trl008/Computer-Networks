@@ -16,10 +16,9 @@ from datetime import datetime, timedelta
 log = logging.getLogger(__name__)
 
 class reliableAlg:
-    def __init__(self, retries=7, ackN = 0):
+    def __init__(self, retries=7):
         self.retries = retries
         self.timeout = timedelta(seconds=5)
-        self.ackN=ackN
 
     def run_server(self, outdir, addr, mtu):
         "run the server on the given addr/port/mtu, files are stored in outdir"
@@ -64,25 +63,20 @@ class reliableAlg:
                 else:
                     # else we got a chunk of data
                     log.debug("Got a chunk!")
-                    log.info("Data {}".format(data))
 
                     # extract header and compare the checksum from the header to the actual calculated checksum
-                    udp_header = data[:16]
-                    log.info("Header {}".format(udp_header))
-                    packet_data = data[16:]
-                    udp_header_unpacked = struct.unpack("IIII", udp_header)
-                    correct_checksum = udp_header[3]
-                    checksum = reliableAlg.checksum_calculator(packet_data)
-                    is_data_corrupted = correct_checksum != checksum
+                    udp_header = data[:8]
+                    checksum_num = reliableAlg.checksum_calculator(data[8:])
+                    i, checksum = struct.unpack("II", udp_header)
 
                     # send NACK if data is corrupted, if not, write data and send ACK
-                    if is_data_corrupted:
-                        log.debug("Send NACK")
-                        sock.sendto(B'NACK', remote_addr)
-                    else:
-                        outfile.write(packet_data)
-                        log.debug("Send ACK")
+                    if (checksum_num == checksum) and (next_seq_num >=i):
+                        if next_seq_num==i:
+                            outfile.write(data)
                         sock.sendto(B'ACK', remote_addr)
+                        next_seq_num +=1
+                    else:
+                        sock.sendto(B'NACK', remote_addr)
 
             else:
                 # we are not in a transfer, check for begin
@@ -178,13 +172,13 @@ class reliableAlg:
         # send each chunk and header with checksum and seq num, waiting for an ACK
         i=0
         while i<len(payload):
-            chunk = payload[i]
             tries = 0
-            checksum = reliableAlg.checksum_calculator(chunk)
-            udp_header = struct.pack("II", i, checksum)
-            packet_with_header = udp_header + chunk
-            log.info("Send chunk {} of {}".format(i, len(payload)-1))
             while tries < self.retries:
+                chunk = payload[i]
+                checksum = reliableAlg.checksum_calculator(chunk)
+                udp_header = struct.pack("II", i, checksum)
+                packet_with_header = udp_header + chunk
+                log.info("Send chunk {} of {}".format(i, len(payload)-1))
                 # send the chunk
                 sock.sendto(packet_with_header, dest)
                 try:
@@ -196,10 +190,11 @@ class reliableAlg:
                     continue
                 # if we got an ACK, break out of the loop (chunk was received)
                 if data == B"ACK":
+                    i+=1
                     break
                 elif data == B"NACK":
                     log.info("Packet corrupted, RETRY")
-                    tries +=1
+                    i-=1
                     continue
                 else:
                     log.info("Bad response from server, got {} instead of ACK, RETRY".format(
@@ -221,7 +216,7 @@ class reliableAlg:
             filename, dest[0], dest[1], mtu))
 
         # break the file into mtu sized pieces
-        payload, total_bytes = self.chunk(load_file(filename), mtu)
+        payload, total_bytes = self.chunk(load_file(filename), mtu-8)
 
         # begin the transfer
         s = self.begin_xfr(dest, filename, mtu)

@@ -48,7 +48,7 @@ def parse_args():
     parser.add_argument('--alg',
                         help='The algorithm to use [sw].',
                         default='sw',
-                        choices=['sw', 'reliableAlg'])
+                        choices=['sw', 'ra'])
     return parser.parse_args()
 
 if __name__ == "__main__":
@@ -62,6 +62,18 @@ if __name__ == "__main__":
         # the server should never stop...
         try:
             algs.sw.run_server(
+                    outdir=args.outdir,
+                    addr=(args.addr, args.port),
+                    mtu=args.mtu)
+        except Exception as x:
+            logging.error("Server died: {}".format(x))
+            raise(x)
+            sys.exit(-15)
+    # add additional algorithms here.
+    elif args.alg == 'ra':  # reliable algorithm protocol
+        # the server should never stop...
+        try:
+            algs.ra.run_server(
                     outdir=args.outdir,
                     addr=(args.addr, args.port),
                     mtu=args.mtu)

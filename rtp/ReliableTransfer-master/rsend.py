@@ -48,7 +48,7 @@ def parse_args():
     parser.add_argument('--alg',
                         help='The algorithm to use [sw].',
                         default='sw',
-                        choices=['sw', 'reliableAlg'])
+                        choices=['sw', 'ra'])
     return parser.parse_args()
 
 if __name__ == "__main__":
@@ -72,10 +72,10 @@ if __name__ == "__main__":
             logging.error("Transfer failed: {}".format(x))
             raise(x)
             sys.exit(-5)
-    else if args.alg == 'reliableAlg': # reliableAlg protocol
+    elif args.alg == 'ra': # reliableAlg protocol
         # map files list into multiple calls
         try:
-            result = list(map(lambda x: algs.reliableAlg.send_file(
+            result = list(map(lambda x: algs.ra.send_file(
                     filename=x,
                     dest=(args.dst, args.port),
                     mtu=args.mtu),
