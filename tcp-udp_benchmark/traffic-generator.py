@@ -104,6 +104,7 @@ def generate_packets(protocol, packet_size, bandwidth, distribution, duration, d
                         try:
                             response_data, server = sock.recvfrom(packet_size+12)
                             recv_time=time.time()
+                            print(response_data)
                             recv_sequence_number, zeros = struct.unpack(format_string,packet_data)
                             rtt = recv_time - send_time
                             rtt_values.append(rtt)
@@ -121,6 +122,7 @@ def generate_packets(protocol, packet_size, bandwidth, distribution, duration, d
                         try:
                             response_data, server = sock.recvfrom(packet_size+12)
                             recv_time=time.time()
+                            print(response_data)
                             recv_sequence_number, zeros = struct.unpack(format_string,packet_data)
                             rtt = recv_time - send_time
                             rtt_values.append(rtt)
@@ -145,6 +147,7 @@ def generate_packets(protocol, packet_size, bandwidth, distribution, duration, d
                         try:
                             response_data, server = sock.recvfrom(packet_size+12)
                             recv_time=time.time()
+                            print(response_data)
                             recv_sequence_number, zeros = struct.unpack(format_string,packet_data)
                             rtt = recv_time - send_time
                             rtt_values.append(rtt)
@@ -163,6 +166,7 @@ def generate_packets(protocol, packet_size, bandwidth, distribution, duration, d
                         try:
                             response_data, server = sock.recvfrom(packet_size+12)
                             recv_time=time.time()
+                            print(response_data)
                             recv_sequence_number, zeros = struct.unpack(format_string,packet_data)
                             rtt = recv_time - send_time
                             rtt_values.append(rtt)
@@ -185,9 +189,9 @@ def generate_packets(protocol, packet_size, bandwidth, distribution, duration, d
     rtt_max = max(rtt_values)
     formatted_max = "{:.2e}".format(rtt_max)
     rtt_mean = np.mean(rtt_values)
-    formatted_mean = "{:.2e}".format(rtt_min)
+    formatted_mean = "{:.2e}".format(rtt_mean)
     rtt_median = statistics.median(rtt_values)
-    formatted_median = "{:.2e}".format(rtt_min)
+    formatted_median = "{:.2e}".format(rtt_median)
 
     print("" + str(packets_sent) + " packets were sent and " + str(packets_received) + " packets received in " + str(total_time) + " seconds")
     print("Percent of packets lost: " + str(loss_rate) + "%") 
