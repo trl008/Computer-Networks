@@ -20,7 +20,7 @@ IP_DESTINATION = "127.0.0.1"  # replace with your destination IP address
 
 # TCP header fields
 TCP_SOURCE_PORT = 1234  # replace with your source port number
-TCP_DESTINATION_PORT = 5678  # replace with your destination port number
+TCP_DESTINATION_PORT = 8888  # replace with your destination port number
 TCP_SEQUENCE_NUMBER = 0
 TCP_ACK_NUMBER = 0
 TCP_DATA_OFFSET = 5
@@ -75,6 +75,7 @@ print('Packet sent successfully.')
 # Receive the response
 response, addr = sock.recvfrom(65535)
 print('Response received.')
+print(addr)
 print(response)
 
 # Extract the TCP header and data from the response
