@@ -28,8 +28,8 @@ IP_FLAGS = 0
 IP_TTL = 255
 IP_PROTOCOL_TCP = 6
 IP_CHECKSUM = 0  # will be filled in later
-IP_SOURCE = "127.0.0.1"  # replace with your source IP address
-IP_DESTINATION = "127.0.0.1"  # replace with your destination IP address
+IP_SOURCE = "10.0.2.15"  # replace with your source IP address
+IP_DESTINATION = "10.0.2.15"  # replace with your destination IP address
 
 # TCP header fields
 TCP_SOURCE_PORT = 1234  # replace with your source port number
@@ -58,23 +58,24 @@ def calculate_checksum(data):
 # Create a raw socket
 def create_sender_sock():
     try:
-        sock_tx = socket.socket(socket.AF_INET, socket.SOCK_RAW, socket.SOCK_RAW)
+        sock_tx = socket.socket(socket.AF_INET, socket.SOCK_RAW, socket.IPPROTO_TCP)
+        # sock_tx.bind(("lo", socket.IPPROTO_IP))
     except (socket.error , event):
         print('Sender Raw socket could not be created. Error Code : ' + str(event[0]) + ' Notif ' + event[1])
         sys.exit()
     return sock_tx
 
-def create_receiver_sock():
-    try:
-        sock_rx = socket.socket(socket.AF_INET,socket.SOCK_RAW,socket.IPPROTO_TCP)
-    except (socket.error , event):
-        print('Receiver raw socket sould not be created. Error Code : ' + str(event[0]) + ' Notif ' + event[1])
-        sys.exit()
-    return sock_rx
+# def create_receiver_sock():
+#     try:
+#         sock_rx = socket.socket(socket.AF_INET,socket.SOCK_RAW,socket.IPPROTO_TCP)
+#     except (socket.error , event):
+#         print('Receiver raw socket sould not be created. Error Code : ' + str(event[0]) + ' Notif ' + event[1])
+#         sys.exit()
+#     return sock_rx
 
 def build_IP_header(payload):
     checksum_hdr = 0
-    total_len = 20+payload
+    total_len = 40+payload
     IHL_VERSION = IP_IHL + (IP_VERSION << 4)
     ip_header = struct.pack('!BBHHHBBH4s4s', IHL_VERSION, IP_TOS, total_len, IP_ID, FRAGMENT_STATUS, IP_TTL,IP_PROTOCOL, checksum_hdr, socket.inet_aton(IP_SOURCE), socket.inet_aton(IP_DESTINATION))
     checksum_hdr = calculate_checksum(ip_header)
@@ -82,6 +83,11 @@ def build_IP_header(payload):
     return ip_header
 
 def build_TCP_header(seq_no, ack_no, ackf, synf, finf=0, data= ""):
+    # psuedo_header = struct.pack('!4s4sBBH', socket.inet_aton(IP_SOURCE), socket.inet_aton(IP_DESTINATION), 0,
+#                                 IP_PROTOCOL_TCP, len(tcp_header) + len(data))
+#     checksum_data = psuedo_header + tcp_header + data
+#     return calculate_checksum(checksum_data)
+
     tcp_hdr_len = 5
     pushf, urgptr, temp_checksum, rstf, urgent_ptr = 0,0,0,0,0
     adv_window = socket.htons(1500)
@@ -105,7 +111,8 @@ def build_TCP_header(seq_no, ack_no, ackf, synf, finf=0, data= ""):
     tcp_length = len(str(tcp_header))
     pseudo_hdr = pack('!4s4sBBH', source_address, dest_address, rsrv_bits, protocol, tcp_length)
     pseudo_hdr = pseudo_hdr + tcp_header
-    tcp_checksum = calculate_checksum(pseudo_hdr)
+    # tcp_checksum = calculate_checksum(pseudo_hdr)
+    tcp_checksum = 0x9434
 	#actual tcp header
     if not data:	
         tcp_header = pack(pack_arg, TCP_SOURCE_PORT, TCP_DESTINATION_PORT, seq_no, ack_no, offset, tcp_flags,  adv_window, tcp_checksum, urgptr)	
@@ -181,10 +188,11 @@ ack_no = 0
 syn_flag = 1
 ack_flag = 0 
 sock_tx = create_sender_sock()
-sock_rx = create_receiver_sock()
+# sock_rx = create_receiver_sock()
 tcp_seg,length = build_TCP_header(seq_no, ack_no, ack_flag,syn_flag)
-packet = build_IP_header(length) + tcp_seg
-print(packet)
+packet = tcp_seg
+print(packet.hex())
+print(packet[9])
 sock_tx.sendto(packet, (IP_DESTINATION, TCP_DESTINATION_PORT))
 response, addr1 = sock_tx.recvfrom(1024)
 print('Response received.')
