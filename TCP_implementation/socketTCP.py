@@ -100,7 +100,7 @@ def build_TCP_header(seq_no, ack_no, ackf, synf, finf=0, data= ""):
     if not data:							# For syn,ack,fin segments
         tcp_header = pack(pack_arg, TCP_SOURCE_PORT, TCP_DESTINATION_PORT, seq_no, ack_no, offset, tcp_flags, adv_window, temp_checksum, urgptr)	
     else:								# For segements that contain some payload
-        pack_arg = pack_arg + str(payload_len) + 's'
+        pack_arg = pack_arg + str(payload) + 's'
         tcp_header = pack(pack_arg, TCP_SOURCE_PORT, TCP_DESTINATION_PORT, seq_no, ack_no, offset, tcp_flags,  adv_window, temp_checksum, urgptr,data)
     source_address = socket.inet_aton(IP_SOURCE)
     dest_address = socket.inet_aton(IP_DESTINATION)
@@ -183,6 +183,7 @@ def perform_TCP_handshake(rx_sock,tx_sock):
         tx_sock.sendto(packet, (IP_DESTINATION, TCP_DESTINATION_PORT))
         return new_ack,2,mss
 
+
 seq_no = 1
 ack_no = 0
 syn_flag = 1
@@ -191,112 +192,47 @@ sock_tx = create_sender_sock()
 # sock_rx = create_receiver_sock()
 tcp_seg,length = build_TCP_header(seq_no, ack_no, ack_flag,syn_flag)
 packet = tcp_seg
-print(packet.hex())
-print(packet[9])
+# Send SYN
 sock_tx.sendto(packet, (IP_DESTINATION, TCP_DESTINATION_PORT))
+print("Sending SYN")
+
+#Receive SYN-ACK
 response, addr1 = sock_tx.recvfrom(1024)
-print('Response received.')
-print(addr1)
-print(response)
+print('SYN-ACK received at (address, port):' + str(addr1))
 
-# # Receive the SYN-ACK packet
-# response_packet, addr = sock.recvfrom(1024)
-# tcp_header = response_packet[20:40]
-# TCP_FLAGS = int.from_bytes(tcp_header[13:14], byteorder='big')
+tcp_header = response[20:40]
+TCP_FLAGS = int.from_bytes(tcp_header[13:14], byteorder='big')
 
-# # Extract the acknowledgement number from the SYN-ACK packet
-# TCP_ACK_NUMBER = int.from_bytes(tcp_header[4:8], byteorder='big')
+# Extract the acknowledgement number from the SYN-ACK packet
+TCP_ACK_NUMBER = int.from_bytes(tcp_header[4:8], byteorder='big')
 
-# #Set the TCP ACK flag
-# TCP_FLAGS = TCP_ACK
+# Set the TCP ACK flag
+TCP_FLAGS = TCP_ACK
 
-# #Set the TCP header fields
-# tcp_header = struct.pack('!HHLLBBHHH', TCP_SOURCE_PORT, TCP_DESTINATION_PORT, TCP_SEQUENCE_NUMBER, TCP_ACK_NUMBER,
-#                          (TCP_DATA_OFFSET << 4) + 0, TCP_FLAGS, TCP_WINDOW_SIZE, TCP_CHECKSUM, TCP_URGENT_POINTER)
+# Send back ACK that SYN-ACK was received
+seq_no = 2
+syn_flag = 0
+ack_flag = 1 	
+tcp_seg2,length = build_TCP_header(seq_no, TCP_ACK_NUMBER, ack_flag,syn_flag)
+sock_tx.sendto(tcp_seg2, (IP_DESTINATION, TCP_DESTINATION_PORT))
 
-# # Pack the IP and TCP headers
-# packet = ip_header + tcp_header
+# Send data
+seq_no = 3
+syn_flag = 0
+ack_flag = 0 	
+data = b'Hello, TCP!'
+print('Data being sent: Hello, TCP!')
+tcp_seg3,length = build_TCP_header(seq_no, TCP_ACK_NUMBER, ack_flag,syn_flag,0,data)
+sock_tx.sendto(tcp_seg3, (IP_DESTINATION, TCP_DESTINATION_PORT))
 
-# # Send the ACK packet
-# sock.sendto(packet, (IP_DESTINATION, TCP_DESTINATION_PORT))
+#Receive data back from echo server
+response2, addr2 = sock_tx.recvfrom(1024)
+responseWord = response2[44:]
+print(response2)
+responseWord.decode()
+# responseWord = struct.unpack('!HHLLBBHHH', response2)[9]
+print('Response received at (address, port):' + str(addr2))
+print('Resonse: '+ str(responseWord))
 
-# # Data to send
-# data = b'Hello, TCP!'
-
-# # Calculate IP checksum
-
-
-# # Calculate TCP checksum
-# def calculate_tcp_checksum(ip_header, tcp_header, data=b''):
-#     psuedo_header = struct.pack('!4s4sBBH', socket.inet_aton(IP_SOURCE), socket.inet_aton(IP_DESTINATION), 0,
-#                                 IP_PROTOCOL_TCP, len(tcp_header) + len(data))
-#     checksum_data = psuedo_header + tcp_header + data
-#     return calculate_checksum(checksum_data)
-
-# # Set IP checksum
-# IP_CHECKSUM = calculate_checksum(ip_header)
-
-# # Set TCP checksum
-# TCP_CHECKSUM = calculate_tcp_checksum(ip_header, tcp_header, data)
-
-# # Construct the packet
-# packet = ip_header + tcp_header + data
-
-# # Send the packet
-# sock.sendto(packet, (IP_DESTINATION, TCP_DESTINATION_PORT))
-# print('Packet sent successfully.')
-
-# # Receive the response
-# response, addr1 = sock_tx.recvfrom(1024)
-# print('Response received.')
-# print(addr1)
-# print(response)
-
-# # Extract the TCP header and data from the response
-# ip_header_length = (struct.unpack('!B', response[0:1])[0] & 0x0F)
-
-# # Calculate the offset of the TCP header
-# tcp_header_offset = ip_header_length * 4
-
-# # Extract the TCP header and data from the response packet
-# tcp_header = response[tcp_header_offset:tcp_header_offset+20]
-# tcp_data = response[tcp_header_offset+20:]
-
-# # Extract the TCP flags from the TCP header
-# TCP_FLAGS = int.from_bytes(tcp_header[13:14], byteorder='big')
-
-# # Check if the SYN-ACK packet has the expected flags
-# if TCP_FLAGS != (TCP_SYN | TCP_ACK):
-#     print('Received unexpected flags in SYN-ACK packet.')
-#     exit()
-
-# # Extract the acknowledgement number from the TCP header
-# TCP_ACK_NUMBER = int.from_bytes(tcp_header[4:8], byteorder='big')
-
-# # Set the TCP header fields for the data packet
-# TCP_SEQUENCE_NUMBER += 1
-# TCP_ACK = 1
-# TCP_FLAGS = 0
-
-# # Set the TCP checksum for the data packet
-# TCP_CHECKSUM = calculate_tcp_checksum(ip_header, tcp_header, data)
-
-# # Pack the TCP header
-# tcp_header = struct.pack('!HHLLBBHHH', TCP_SOURCE_PORT, TCP_DESTINATION_PORT, TCP_SEQUENCE_NUMBER, TCP_ACK_NUMBER,
-#                          (TCP_DATA_OFFSET << 4) + 0, TCP_FLAGS, TCP_WINDOW_SIZE, TCP_CHECKSUM, TCP_URGENT_POINTER)
-
-# # Construct the packet
-# packet = ip_header + tcp_header + data
-
-# # Send the packet
-# sock.sendto(packet, (IP_DESTINATION, TCP_DESTINATION_PORT))
-# print('Data packet sent successfully.')
-
-# # Receive the response
-# response, addr2 = sock.recvfrom(1024)
-# print('Response received.')
-# print(addr2)
-# print(response)
-
-# # Close the socket
-# sock.close()
+# Close the socket
+sock_tx.close()
