@@ -9,6 +9,7 @@
 # Student Info
 Name: Taylor LaMantia
 
+# Description
 This program is a chat server for client communication with a server using TCP Server. The server can accept multiple simultaneous TCP connections from clients, can handle each client in its own thread using select or poll. The client can send messages to the server, which will broadcast the message to all connected clients. Server displays nickname of client along with message when broadcasting messge to other clients. Server handles disconnection of clients and updates list of connected clients accordingly. Server can handle a maximum of 100 clients at a time.
 
 # Server Commands:
